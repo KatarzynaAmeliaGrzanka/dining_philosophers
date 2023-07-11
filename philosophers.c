@@ -11,7 +11,6 @@
 #define EATING_TIME_RANGE 2
 
 int eaten_id;
-
 int sem_set_id;
 
 void grab_forks( int left_fork_id ){
@@ -28,7 +27,6 @@ void grab_forks( int left_fork_id ){
     sem_op[1].sem_flg = 0;
 
     semop(sem_set_id, sem_op, 2); // performing this operation simultaneusly on two semaphors (grabing two forks)
-
 };
 
 void put_away_forks( int left_fork_id ){
@@ -45,7 +43,6 @@ void put_away_forks( int left_fork_id ){
     sem_op[1].sem_flg = 0;
 
     semop(sem_set_id, sem_op, 2); // performing this operation simultaneusly on two semaphors
-
 };
 
 void addMeal(int i){
@@ -77,8 +74,6 @@ void philosopher(int philosopher_id) {
     }
 }
 
-
-
 int main(){
     printf("hello");
 
@@ -91,7 +86,6 @@ int main(){
                                                 // sem_set_id is an identifier of these semaphores
 
     eaten_id = semget (IPC_PRIVATE, N, 0666 | IPC_CREAT);
-
     
     if(sem_set_id < 0) {
         printf("Error while creating semaphores!");
@@ -99,15 +93,12 @@ int main(){
     }
 
     // initializing semaphores
-
     for (i = 0; i < N; i ++){ // set all semaphores to value 1 (forks available)
         if (semctl (sem_set_id, i , SETVAL, 1) < 0){
             printf("Error while initializing the semaphores!");
             exit(1);
         }
     }
-
-
     // create child processes 
     for (i = 0; i < N; i++){
          pid[i] = fork();
@@ -126,10 +117,5 @@ int main(){
         for (i = 0; i < N; i++){
             wait(NULL);
         }
-    
-
-
-
-
     return 0;
 }
